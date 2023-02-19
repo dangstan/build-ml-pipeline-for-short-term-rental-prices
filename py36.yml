@@ -1,0 +1,4 @@
+name: py36
+channels:
+  - defaults
+prefix: /home/daniel/miniconda3/envs/py36
