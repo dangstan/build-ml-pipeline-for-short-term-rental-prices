@@ -113,3 +113,8 @@ mlruns/
 outputs/
 random_forest_dir/
 multirun/
+
+# csv / parquet files
+
+*.csv
+*.parquet
