@@ -22,7 +22,7 @@ def go(args):
     # Download input artifact. This will also note that this script is using this
     # particular version of the artifact
     logger.info(f"Fetching artifact {args.input}")
-    artifact_local_path = run.use_artifact(args.input).file()
+    artifact_local_path = run.use_artifact(args.input).get_path('featurized.csv')
 
     df = pd.read_csv(artifact_local_path)
 
