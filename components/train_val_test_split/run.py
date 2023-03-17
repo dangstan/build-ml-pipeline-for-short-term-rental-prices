@@ -22,9 +22,9 @@ def go(args):
     # Download input artifact. This will also note that this script is using this
     # particular version of the artifact
     logger.info(f"Fetching artifact {args.input}")
-    artifact_local_path = run.use_artifact(args.input).get_path('featurized.csv')
+    artifact_local_path = run.use_artifact(args.input, type='featurized').download()
 
-    df = pd.read_csv(artifact_local_path)
+    df = pd.read_csv(artifact_local_path+'/featurized.csv')
 
     logger.info("Splitting trainval and test")
     trainval, test = train_test_split(
