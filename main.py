@@ -88,7 +88,7 @@ def go(config: DictConfig):
                  }   
             )
 
-        if "lgbm" in active_steps:
+        if "train_lgbm" in active_steps:
 
             # NOTE: we need to serialize the random forest configuration into JSON
             rf_config = os.path.abspath("rf_config.json")
