@@ -31,7 +31,8 @@ def go(args):
         df,
         test_size=args.test_size,
         random_state=args.random_seed,
-        stratify=df[args.stratify_by] if args.stratify_by != 'none' else None,
+        # df[args.stratify_by] if args.stratify_by != 'none' else
+        stratify=None,
     )
 
     # Save to output files
