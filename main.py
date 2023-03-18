@@ -32,6 +32,9 @@ def go(config: DictConfig):
     steps_par = config['main']['steps']
     active_steps = steps_par.split(",") if steps_par != "all" else _steps
 
+    # You can get the path at the root of the MLflow project with this:
+    root_path = hydra.utils.get_original_cwd()
+
     # Move to a temporary directory
     with tempfile.TemporaryDirectory() as tmp_dir:
 
@@ -98,11 +101,20 @@ def go(config: DictConfig):
             # NOTE: use the rf_config we just created as the rf_config parameter for the train_random_forest
             # step
 
-            ##################
-            # Implement here #
-            ##################
+            mlflow.run(
+                os.path.join(hydra.utils.get_original_cwd(), "src", "train_lgbm"),
+                "main",
+                parameters={
+                "trainval_artifact": "trainval_data.csv:latest",
+                "val_size": config['modeling']['val_size'],
+                "random_seed": config['modeling']['random_seed'],
+                "stratify_by": config['modeling']['stratify_by'],
+                "rf_config": rf_config,
+                "max_tfidf_features": config['modeling']['max_tfidf_features'],
+                "output_artifact": 'lgbm_export'
+                }
+            )
 
-            pass
 
         if "test_regression_model" in active_steps:
 
