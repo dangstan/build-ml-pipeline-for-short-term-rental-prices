@@ -9,10 +9,10 @@ from omegaconf import DictConfig
 
 _steps = [
     "download",
-    "basic_cleaning",
+    "advanced_feature_engineer",
     "data_check",
     "data_split",
-    "train_random_forest",
+    "train_lgbm",
     # NOTE: We do not include this in the steps so it is not run by mistake.
     # You first need to promote a model export to "prod" before you can run this,
     # then you need to run this step explicitly
@@ -32,9 +32,6 @@ def go(config: DictConfig):
     steps_par = config['main']['steps']
     active_steps = steps_par.split(",") if steps_par != "all" else _steps
 
-    # You can get the path at the root of the MLflow project with this:
-    root_path = hydra.utils.get_original_cwd()
-
     # Move to a temporary directory
     with tempfile.TemporaryDirectory() as tmp_dir:
 
@@ -52,14 +49,14 @@ def go(config: DictConfig):
                 },
             )
 
-        if "basic_cleaning" in active_steps:
+        if "advanced_feature_engineer" in active_steps:
             _ = mlflow.run(
-                os.path.join(hydra.utils.get_original_cwd(), "src", "basic_cleaning"),
+                os.path.join(hydra.utils.get_original_cwd(), "src", "advanced_feature_engineer"),
                 "main",
                 parameters={
                     "input_artifact": "sample.csv:latest",
-                    "output_artifact": "clean_sample.csv",
-                    "output_type": "clean_sample",
+                    "output_artifact": "featurized.csv",
+                    "output_type": "featurized",
                     "output_description": "Data with outliers and null values removed",
                     "min_price": config['etl']['min_price'],
                     "max_price": config['etl']['max_price']
