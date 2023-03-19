@@ -5,6 +5,7 @@ import logging
 from collections import Counter
 from boruta import BorutaPy
 from lightgbm import LGBMRegressor
+import gc
 
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
@@ -237,7 +238,7 @@ def reducing_features(df):
 
     # let's initialize Boruta
     feat_selector = BorutaPy(
-        verbose=0,
+        verbose=1,
         estimator=model,
         n_estimators='auto',
         max_iter=50  # number of iterations to perform
@@ -248,5 +249,9 @@ def reducing_features(df):
     feat_selector.fit(np.array(X), np.array(y))
 
     # print support and ranking for each feature
+
+    gc.collect()
+
+    logger.info(f'{len(feat_selector.support_)} features remaining')
 
     return X.columns[feat_selector.support_]
