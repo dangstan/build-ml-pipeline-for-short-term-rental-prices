@@ -65,6 +65,8 @@ def go(args):
 
     boruta_features = pd.read_json(artifact_local_path+'/boruta_featured.json')[0].values.tolist()
 
+    X = X[boruta_features]
+
     logger.info(f"Trainval loaded: {len(X)} rows, {len(X.columns)} columns")
 
     X_train, X_val, y_train, y_val = train_test_split(
@@ -160,7 +162,7 @@ def plot_feature_importance(pipe, feat_names):
     return fig_feat_imp
 
 
-def get_inference_pipeline(rf_config, max_tfidf_features, keep_cols):
+def get_inference_pipeline(rf_config, max_tfidf_features):
     # Let's handle the categorical features first
     # Ordinal categorical are categorical values for which the order is meaningful, for example
     # for room type: 'Entire home/apt' > 'Private room' > 'Shared room'
@@ -215,17 +217,12 @@ def get_inference_pipeline(rf_config, max_tfidf_features, keep_cols):
         ),
     )
 
-    cols_to_keep = make_pipeline(
-        FunctionTransformer(reducing_features, check_inverse=False, validate=False)
-    )
-
     # Let's put everything together
     preprocessor = ColumnTransformer(
         transformers=[
     #        ("ordinal_cat", ordinal_categorical_preproc, ordinal_categorical),
     #        ("non_ordinal_cat", non_ordinal_categorical_preproc, non_ordinal_categorical),
     #        ("impute_zero", zero_imputer, zero_imputed),
-            ("reduce_columns", cols_to_keep, keep_cols),
             ("transform_date", date_imputer, ["last_review"]),
             ("transform_name", name_tfidf, ["name"])
         ],
