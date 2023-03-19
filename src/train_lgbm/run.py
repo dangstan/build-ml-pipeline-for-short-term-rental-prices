@@ -244,7 +244,7 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     sk_pipe = Pipeline(
         steps = [
             ('preprocessor', preprocessor),
-            ('feature reduction',reducing_features)
+            ('feature reduction',reducing_features),
             ('lgbm', lgbm)
         ]
     )
