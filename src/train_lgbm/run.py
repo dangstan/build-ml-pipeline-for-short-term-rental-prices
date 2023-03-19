@@ -65,7 +65,7 @@ def go(args):
 
     boruta_features = pd.read_json(artifact_local_path+'/boruta_featured.json')[0].values.tolist()
 
-    X = X[boruta_features]
+    X = X[['last_review','name']+boruta_features]
 
     logger.info(f"Trainval loaded: {len(X)} rows, {len(X.columns)} columns")
 
