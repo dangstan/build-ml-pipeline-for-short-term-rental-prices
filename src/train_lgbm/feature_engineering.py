@@ -12,12 +12,6 @@ def delta_date_feature(dates):
     return date_sanitized.apply(lambda d: (d.max() -d).dt.days, axis=0).to_numpy()
 
 
-def reducing_features(df):
+def reducing_features(df,keep_cols):
 
-    run = wandb.init()
-
-    artifact_local_path = run.use_artifact('dangstan/nyc_airbnb/featurized:latest', type='featurized').download()
-
-    boruta_features = pd.read_json(artifact_local_path+'/dummies.json')[0].values.tolist()
-
-    return df[['last_review','name','price']+boruta_features]
+    return df[['last_review','name','price']+keep_cols]

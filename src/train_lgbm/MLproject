@@ -9,6 +9,10 @@ entry_points:
         description: Train dataset
         type: string
 
+      features_artifact:
+        description: Features to keep
+        type: str
+
       val_size:
         description: Size of the validation split. Fraction of the dataset, or number of items
         type: string
@@ -38,6 +42,7 @@ entry_points:
 
     command: >-
       python run.py --trainval_artifact {trainval_artifact} \
+                    --features_artifact {features_artifact} \
                     --val_size {val_size} \
                     --random_seed {random_seed} \
                     --stratify_by {stratify_by} \

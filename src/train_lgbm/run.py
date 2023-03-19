@@ -61,6 +61,10 @@ def go(args):
     X = pd.read_csv(trainval_local_path)
     y = X.pop("price")  # this removes the column "price" from X and puts it into y
 
+    artifact_local_path = run.use_artifact(args.features_artifact, type='featurized').download()
+
+    boruta_features = pd.read_json(artifact_local_path+'/brouta_featured.json')[0].values.tolist()
+
     logger.info(f"Trainval loaded: {len(X)} rows, {len(X.columns)} columns")
 
     X_train, X_val, y_train, y_val = train_test_split(
@@ -71,7 +75,7 @@ def go(args):
 
     logger.info("Preparing sklearn pipeline")
 
-    sk_pipe, processed_features = get_inference_pipeline(rf_config, args.max_tfidf_features)
+    sk_pipe, processed_features = get_inference_pipeline(rf_config, args.max_tfidf_features, boruta_features)
 
     # Then fit it to the X_train, y_train data
     logger.info(f"Fitting")
@@ -156,7 +160,7 @@ def plot_feature_importance(pipe, feat_names):
     return fig_feat_imp
 
 
-def get_inference_pipeline(rf_config, max_tfidf_features):
+def get_inference_pipeline(rf_config, max_tfidf_features, keep_cols):
     # Let's handle the categorical features first
     # Ordinal categorical are categorical values for which the order is meaningful, for example
     # for room type: 'Entire home/apt' > 'Private room' > 'Shared room'
@@ -211,12 +215,17 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
         ),
     )
 
+    cols_to_keep = make_pipeline(
+        FunctionTransformer(reducing_features, check_inverse=False, validate=False)
+    )
+
     # Let's put everything together
     preprocessor = ColumnTransformer(
         transformers=[
     #        ("ordinal_cat", ordinal_categorical_preproc, ordinal_categorical),
     #        ("non_ordinal_cat", non_ordinal_categorical_preproc, non_ordinal_categorical),
     #        ("impute_zero", zero_imputer, zero_imputed),
+            ("reduce_columns", cols_to_keep, keep_cols),
             ("transform_date", date_imputer, ["last_review"]),
             ("transform_name", name_tfidf, ["name"])
         ],
