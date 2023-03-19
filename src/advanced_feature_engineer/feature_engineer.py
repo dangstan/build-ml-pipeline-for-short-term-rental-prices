@@ -252,6 +252,8 @@ def reducing_features(df):
 
     gc.collect()
 
-    logger.info(f'{len(feat_selector.support_)} features remaining')
+    X = feat_selector.transform(X)
 
-    return X.columns[feat_selector.support_]
+    logger.info(f'{len(X.columns)} features remaining')
+
+    return X
