@@ -237,7 +237,7 @@ def reducing_features(df):
 
     # let's initialize Boruta
     feat_selector = BorutaPy(
-        verbose=2,
+        verbose=0,
         estimator=model,
         n_estimators='auto',
         max_iter=50  # number of iterations to perform

@@ -16,7 +16,7 @@ def reducing_features(df):
 
     run = wandb.init()
 
-    artifact_local_path = run.use_artifact('dangstan/nyc_airbnb/featurized:v1', type='featurized').download()
+    artifact_local_path = run.use_artifact('dangstan/nyc_airbnb/featurized:latest', type='featurized').download()
 
     boruta_features = pd.read_json(artifact_local_path+'/dummies.json')[0].values.tolist()
 
