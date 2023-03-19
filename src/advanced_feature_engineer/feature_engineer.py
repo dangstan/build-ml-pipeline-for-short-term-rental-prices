@@ -256,4 +256,4 @@ def reducing_features(df):
 
     logger.info(f'{len(X.columns)} features remaining')
 
-    return X
+    return X.columns
