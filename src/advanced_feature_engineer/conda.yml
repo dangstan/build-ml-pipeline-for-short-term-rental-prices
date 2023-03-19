@@ -5,6 +5,7 @@ channels:
 dependencies:
   - pip=23.0.1
   - pandas=1.5.3
+  - numpy=1.23.2
   - pip:
       - wandb==0.13.10
       - boruta==0.3.0
