@@ -38,7 +38,7 @@ def go(args):
 
     boruta_featured = list(fe.reducing_features(df))
 
-    df = df[['last_review','name']+boruta_featured]
+    df = df[['last_review','name','price']+boruta_featured]
 
     # Convert last_review to datetime
     df['last_review'] = pd.to_datetime(df['last_review'])

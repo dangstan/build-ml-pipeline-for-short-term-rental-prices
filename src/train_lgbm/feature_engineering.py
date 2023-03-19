@@ -20,4 +20,4 @@ def reducing_features(df):
 
     boruta_features = pd.read_json(artifact_local_path+'/dummies.json')[0].values.tolist()
 
-    return df[['last_review','name']+boruta_features]
+    return df[['last_review','name','price']+boruta_features]
