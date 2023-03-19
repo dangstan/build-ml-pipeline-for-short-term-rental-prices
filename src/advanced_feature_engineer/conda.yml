@@ -7,3 +7,4 @@ dependencies:
   - pandas=1.5.3
   - pip:
       - wandb==0.13.10
+      - boruta==0.3.0
