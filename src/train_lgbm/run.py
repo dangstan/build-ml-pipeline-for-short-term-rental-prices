@@ -58,7 +58,7 @@ def go(args):
     trainval_local_path = run.use_artifact(args.trainval_artifact).file()
     ######################################
 
-    X = pd.read_csv(trainval_local_path).drop(columns='host_name')
+    X = pd.read_csv(trainval_local_path)
     y = X.pop("price")  # this removes the column "price" from X and puts it into y
 
     logger.info(f"Trainval loaded: {len(X)} rows, {len(X.columns)} columns")
