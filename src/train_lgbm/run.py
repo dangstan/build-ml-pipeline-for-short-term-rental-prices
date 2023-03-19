@@ -272,6 +272,12 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--features_artifact",
+        type=str,
+        help="Artifact containing the features to keep."
+    )
+
+    parser.add_argument(
         "--val_size",
         type=float,
         help="Size of the validation split. Fraction of the dataset, or number of items",
