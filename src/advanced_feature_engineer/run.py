@@ -56,7 +56,7 @@ def go(args):
         json.dump(dummies, f)
     
     with open('boruta_featured.json', 'w') as f:
-        json.dump(dummies, f)
+        json.dump(boruta_featured, f)
 
     artifact = wandb.Artifact(
         args.output_artifact,
