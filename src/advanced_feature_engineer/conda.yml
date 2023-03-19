@@ -8,3 +8,4 @@ dependencies:
   - pip:
       - wandb==0.13.10
       - boruta==0.3.0
+      - lightgbm==3.3.4
