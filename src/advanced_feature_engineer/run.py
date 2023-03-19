@@ -36,7 +36,7 @@ def go(args):
     df,groupers = fe.grouping(df)
     df,dummies = fe.final_adjustments(df)
 
-    boruta_featured = list(fe.reducing_features(df))
+    boruta_featured = fe.reducing_features(df)
 
     df = df[['last_review','name','price']+boruta_featured]
 
