@@ -63,7 +63,7 @@ def go(args):
 
     artifact_local_path = run.use_artifact(args.features_artifact, type='featurized').download()
 
-    boruta_features = pd.read_json(artifact_local_path+'/brouta_featured.json')[0].values.tolist()
+    boruta_features = pd.read_json(artifact_local_path+'/boruta_featured.json')[0].values.tolist()
 
     logger.info(f"Trainval loaded: {len(X)} rows, {len(X.columns)} columns")
 
