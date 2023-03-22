@@ -192,7 +192,7 @@ def final_adjustments(df,adj_dummies=[]):
     
     dummies = pd.get_dummies(df[['neighbourhood','neighbourhood_group','room_type']],dummy_na=True)
     df = pd.concat([df,dummies],axis=1)
-    df = df.drop(columns=['room_type_nan','neighbourhood_group', 'neighbourhood', 'room_type', 'year','year_month','id','host_id'])
+    df = df.drop(columns=['room_type_nan', 'neighbourhood', 'year','year_month','id','host_id'])
     df.columns = [x.replace('/','_').replace('-','_').replace(',',' ').replace("'",'') for x in df.columns]
     
     if type(adj_dummies)!=list:
