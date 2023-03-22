@@ -166,35 +166,35 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     # Let's handle the categorical features first
     # Ordinal categorical are categorical values for which the order is meaningful, for example
     # for room type: 'Entire home/apt' > 'Private room' > 'Shared room'
-    # ordinal_categorical = ["room_type"]
-    # non_ordinal_categorical = ["neighbourhood_group"]
+    ordinal_categorical = ["room_type"]
+    non_ordinal_categorical = ["neighbourhood_group"]
     # # NOTE: we do not need to impute room_type because the type of the room
     # # is mandatory on the websites, so missing values are not possible in production
     # # (nor during training). That is not true for neighbourhood_group
-    # ordinal_categorical_preproc = OrdinalEncoder()
+    ordinal_categorical_preproc = OrdinalEncoder()
 
     ######################################
     # Build a pipeline with two steps:
     # 1 - A SimpleImputer(strategy="most_frequent") to impute missing values
     # 2 - A OneHotEncoder() step to encode the variable
-#    non_ordinal_categorical_preproc = make_pipeline(
-#        SimpleImputer(strategy='most_frequent'),
-#        OneHotEncoder()
-#        )
+    non_ordinal_categorical_preproc = make_pipeline(
+        SimpleImputer(strategy='most_frequent'),
+        OneHotEncoder()
+        )
 #    ######################################
 #
 #    # Let's impute the numerical columns to make sure we can handle missing values
 #    # (note that we do not scale because the RF algorithm does not need that)
-#    zero_imputed = [
-#        "minimum_nights",
-#        "number_of_reviews",
-#        "reviews_per_month",
-#        "calculated_host_listings_count",
-#        "availability_365",
-#        "longitude",
-#        "latitude"
-#    ]
-#    zero_imputer = SimpleImputer(strategy="constant", fill_value=0)
+    zero_imputed = [
+        "minimum_nights",
+        "number_of_reviews",
+        "reviews_per_month",
+        "calculated_host_listings_count",
+        "availability_365",
+        "longitude",
+        "latitude"
+    ]
+    zero_imputer = SimpleImputer(strategy="constant", fill_value=0)
 
     # A MINIMAL FEATURE ENGINEERING step:
     # we create a feature that represents the number of days passed since the last review
@@ -220,9 +220,9 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     # Let's put everything together
     preprocessor = ColumnTransformer(
         transformers=[
-    #        ("ordinal_cat", ordinal_categorical_preproc, ordinal_categorical),
-    #        ("non_ordinal_cat", non_ordinal_categorical_preproc, non_ordinal_categorical),
-    #        ("impute_zero", zero_imputer, zero_imputed),
+            ("ordinal_cat", ordinal_categorical_preproc, ordinal_categorical),
+            ("non_ordinal_cat", non_ordinal_categorical_preproc, non_ordinal_categorical),
+            ("impute_zero", zero_imputer, zero_imputed),
             ("transform_date", date_imputer, ["last_review"]),
             ("transform_name", name_tfidf, ["name"])
         ],
@@ -230,9 +230,9 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     )
 
     processed_features = (
-    #    ordinal_categorical + 
-    #    non_ordinal_categorical + 
-    #    zero_imputed + 
+        ordinal_categorical + 
+        non_ordinal_categorical + 
+        zero_imputed + 
         [
         "last_review", 
         "name"
