@@ -227,7 +227,7 @@ def reducing_features(df):
 
     temp = df.copy()
 
-    temp = temp.drop(columns=['name','host_name','last_review','reviews_per_month']).dropna()
+    temp = temp.drop(columns=['name','neighbourhood_group','room_type','host_name','last_review','reviews_per_month']).dropna()
 
     y = temp['price']
 
