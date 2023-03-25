@@ -121,7 +121,7 @@ def go(config: DictConfig):
             "main",
             parameters={
                 "mlflow_model": "lgbm_export:prod",
-                "test_dataset": "test_main_data.csv:latest"
+                "test_dataset": "test_data.csv:latest"
             },
         )
 
