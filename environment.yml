@@ -3,7 +3,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - mlflow=2.0.1
   - ipython=7.21.0
   - notebook=6.2.0
   - jupyterlab=3.0.10
@@ -14,4 +13,5 @@ dependencies:
   - git=2.39.2
   - pip=23.0.1
   - pip:
+      - mlflow==2.0.1
       - wandb==0.13.10
