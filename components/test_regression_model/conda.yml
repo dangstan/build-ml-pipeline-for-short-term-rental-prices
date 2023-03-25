@@ -5,9 +5,9 @@ channels:
 dependencies:
   - pandas=1.1.4
   - pip=23.0.1
-  - scikit-learn=0.24.1
   - pip:
       - mlflow==2.0.1
       - wandb == 0.13.2
       - lightgbm==3.3.4
+      - scikit-learn==0.24.1
       - git+https://github.com/udacity/nd0821-c2-build-model-workflow-starter.git#egg=wandb-utils&subdirectory=components
