@@ -5,7 +5,10 @@ flavors:
     model_path: model.pkl
     python_version: 3.8.16
   sklearn:
+    code: null
     pickled_model: model.pkl
     serialization_format: cloudpickle
-    sklearn_version: 1.2.1
-utc_time_created: '2023-03-23 00:02:21.393534'
+    sklearn_version: 0.24.1
+mlflow_version: 1.28.0
+model_uuid: 39f7186f5d4242ffa200e895c469bf14
+utc_time_created: '2023-03-25 16:12:46.938024'
