@@ -340,10 +340,10 @@ with the cleaned data:
                     so we must add it to ``conda.yml`` file, including a version:
    ```yaml
    dependencies:
-     - pip=20.3.3
+     - pip=23.0.1
      - pandas=1.2.3
      - pip:
-         - wandb==0.10.31
+         - wandb==0.13.10
    ```
    
 4. Add the ``basic_cleaning`` step to the pipeline (the ``main.py`` file):
