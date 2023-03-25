@@ -343,7 +343,7 @@ with the cleaned data:
      - pip=23.0.1
      - pandas=1.2.3
      - pip:
-         - wandb==0.13.10
+         - wandb == 0.13.2
    ```
    
 4. Add the ``basic_cleaning`` step to the pipeline (the ``main.py`` file):

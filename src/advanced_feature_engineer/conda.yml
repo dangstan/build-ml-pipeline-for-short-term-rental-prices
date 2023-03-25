@@ -7,6 +7,6 @@ dependencies:
   - pandas=1.5.3
   - numpy=1.23.2
   - pip:
-      - wandb==0.13.10
+      - wandb == 0.13.2
       - boruta==0.3.0
       - lightgbm==3.3.4
