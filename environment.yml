@@ -13,5 +13,5 @@ dependencies:
   - git=2.39.2
   - pip=23.0.1
   - pip:
-      - mlflow=1.28.0
+      - mlflow==1.28.0
       - wandb == 0.13.2
