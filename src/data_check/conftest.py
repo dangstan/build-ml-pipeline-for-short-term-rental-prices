@@ -5,6 +5,7 @@ import wandb
 
 def pytest_addoption(parser):
     parser.addoption("--csv", action="store")
+    parser.addoption("--columns", action="store")
     parser.addoption("--ref", action="store")
     parser.addoption("--kl_threshold", action="store")
     parser.addoption("--min_price", action="store")
@@ -25,6 +26,21 @@ def data(request):
     df = pd.read_csv(data_path)
 
     return df
+
+@pytest.fixture(scope='session')
+def columns(request):
+    run = wandb.init(job_type="data_tests", resume=True)
+
+    # Download input artifact. This will also note that this script is using this
+    # particular version of the artifact
+    data_path = run.use_artifact(request.config.option.columns).get_path('boruta_featured.json')
+
+    if data_path is None:
+        pytest.fail("You must provide the --columns option on the command line")
+
+    cols = pd.read_json(data_path)[0].values.to_list()
+
+    return cols
 
 
 @pytest.fixture(scope='session')

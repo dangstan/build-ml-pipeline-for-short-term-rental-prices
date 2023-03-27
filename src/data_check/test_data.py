@@ -3,31 +3,13 @@ import numpy as np
 import scipy.stats
 
 
-def test_column_names(data):
+def test_column_names(data,columns = list):
 
-    expected_colums = [
-        "id",
-        "name",
-        "host_id",
-        "host_name",
-        "neighbourhood_group",
-        "neighbourhood",
-        "latitude",
-        "longitude",
-        "room_type",
-        "price",
-        "minimum_nights",
-        "number_of_reviews",
-        "last_review",
-        "reviews_per_month",
-        "calculated_host_listings_count",
-        "availability_365",
-    ]
 
     these_columns = data.columns.values
 
     # This also enforces the same order
-    assert list(expected_colums) == list(these_columns)
+    assert columns == list(these_columns)
 
 
 def test_neighborhood_names(data):
