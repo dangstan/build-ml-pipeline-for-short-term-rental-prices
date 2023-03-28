@@ -38,7 +38,7 @@ def columns(request):
     if data_path is None:
         pytest.fail("You must provide the --columns option on the command line")
 
-    cols = pd.read_json(data_path)[0].values.to_list()
+    cols = pd.read_json(data_path)[0].values.tolist()
 
     return cols
 
