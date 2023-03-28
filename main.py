@@ -82,7 +82,7 @@ def go(config: DictConfig):
                 os.path.join(hydra.utils.get_original_cwd(), "src", "data_check"),
                 "main",
                 parameters={
-                    "ref": "clean_data.csv:latest",
+                    "ref": "clean_sample.csv:latest",
                     "csv": "featurized:latest",
                     "columns": "featurized:latest",
                     "kl_threshold": config['data_check']['kl_threshold'],
