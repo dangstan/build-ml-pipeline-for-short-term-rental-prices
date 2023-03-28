@@ -62,15 +62,13 @@ def go(args):
     trainval_local_path = run.use_artifact(args.trainval_artifact).file()
     ######################################
 
-    X = pd.read_csv(trainval_local_path)
-    y = X.pop("price")  # this removes the column "price" from X and puts it into y
-
-
     artifact_local_path = run.use_artifact(args.features_artifact, type='featurized').download()
 
     boruta_features = pd.read_json(artifact_local_path+'/boruta_featured.json')[0].values.tolist()
 
+    X = pd.read_csv(trainval_local_path)
     X = X[boruta_features]
+    y = X.pop("price")  # this removes the column "price" from X and puts it into y
 
     logger.info(f"Trainval loaded: {len(X)} rows, {len(X.columns)} columns")
 
