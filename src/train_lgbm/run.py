@@ -23,7 +23,11 @@ import wandb
 from lightgbm import LGBMRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.pipeline import Pipeline, make_pipeline
-from feature_engineering import reducing_features
+import sys
+sys.path.insert(0, '../src/advanced_feature_engineer/')
+import feature_engineering as fe
+
+
 
 
 def delta_date_feature(dates):
@@ -60,6 +64,7 @@ def go(args):
 
     X = pd.read_csv(trainval_local_path)
     y = X.pop("price")  # this removes the column "price" from X and puts it into y
+
 
     artifact_local_path = run.use_artifact(args.features_artifact, type='featurized').download()
 

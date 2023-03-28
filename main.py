@@ -83,8 +83,8 @@ def go(config: DictConfig):
                 "main",
                 parameters={
                     "ref": "clean_sample.csv:latest",
-                    "csv": "featurized:latest",
-                    "columns": "featurized:latest",
+                    "csv": "featurized:v14",
+                    "columns": "featurized:v14",
                     "kl_threshold": config['data_check']['kl_threshold'],
                     "min_price": config['etl']['min_price'],
                     "max_price": config['etl']['max_price']
@@ -96,7 +96,7 @@ def go(config: DictConfig):
                 f"{config['main']['components_repository']}/train_val_test_split",
                 "main",
                  parameters={
-                    "input": "featurized:v10",
+                    "input": "featurized:v14",
                     "test_size": config['modeling']['test_size'],
                     "random_seed": config['modeling']['random_seed'],
                     "stratify_by": config['modeling']['stratify_by']
@@ -118,7 +118,7 @@ def go(config: DictConfig):
                 "main",
                 parameters={
                 "trainval_artifact": "trainval_data.csv:latest",
-                "features_artifact": "featurized:latest",
+                "features_artifact": "featurized:v14",
                 "val_size": config['modeling']['val_size'],
                 "random_seed": config['modeling']['random_seed'],
                 "stratify_by": config['modeling']['stratify_by'],
