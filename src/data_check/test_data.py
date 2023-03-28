@@ -3,7 +3,7 @@ import numpy as np
 import scipy.stats
 
 
-def test_column_names(data,columns = list):
+def test_column_names(data,columns: list):
 
 
     these_columns = data.columns.tolist()
