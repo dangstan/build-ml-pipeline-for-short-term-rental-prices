@@ -6,10 +6,10 @@ import scipy.stats
 def test_column_names(data,columns = list):
 
 
-    these_columns = data.columns.values
+    these_columns = data.columns.values.tolist()
 
     # This also enforces the same order
-    assert columns == list(these_columns)
+    assert columns == these_columns
 
 
 def test_neighborhood_names(data):
