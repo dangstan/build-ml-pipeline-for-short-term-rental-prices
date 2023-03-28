@@ -6,7 +6,7 @@ import scipy.stats
 def test_column_names(data,columns = list):
 
 
-    these_columns = data.columns.values.tolist()
+    these_columns = data.columns.tolist()
 
     # This also enforces the same order
     assert columns == these_columns
