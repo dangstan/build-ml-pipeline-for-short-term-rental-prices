@@ -132,7 +132,7 @@ def fill_missing(df,groupers, dummies,to_remove=[]):
     df[df.dtypes[df.dtypes=='object'].index.tolist()] = df[df.dtypes[df.dtypes=='object'].index.tolist()].astype(str)
 
     if not to_remove:
-        to_remove = ['neighbourhood_group', 'neighbourhood', 'room_type', 'year','year_month','id','host_id']
+        to_remove = ['neighbourhood', 'year','year_month','id','host_id']
 
     merging_groups = [grouper for grouper in groupers if len([x for x in grouper.columns if 'month' in x])>0]
 
