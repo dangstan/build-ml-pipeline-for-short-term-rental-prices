@@ -30,7 +30,15 @@ def haversine(lat1, lon1, lat2, lon2, to_radians=True, earth_radius=6371):
     return earth_radius * 2 * np.arcsin(np.sqrt(a))
 
 
-def get_distance(df):
+
+
+def get_distance(df:pd.DataFrame):
+    '''
+    function to calculates distances to each corner, calculated from minimum and
+    maximum latitude and longitude
+    df: pd.DataFrame
+    '''
+
 
     df['min_latitude'] = min(df['latitude'])
     df['min_longitude'] = min(df['longitude'])
@@ -51,7 +59,12 @@ def get_distance(df):
     return df
 
 
-def price_interpol(grouper,shft):
+def price_interpol(grouper:list,shft:list):
+    '''
+    interpolate the missing values for the missing period for each grouper dataframe
+    grouper: list of pd.DataFrames
+    shft: amount of periods in the past to account for 
+    '''
 
     grouper = grouper.iloc[:-shft,:]
     grouper['year_month'] = grouper['year_month'].astype(str)+'-01'
@@ -91,7 +104,12 @@ def price_interpol(grouper,shft):
     return grouper
 
 
-def create_group(df,groupers,col,period,shft,interpol=False):
+def create_group(df:pd.DataFrame,groupers:list,col:str,period:str,shft:list,interpol=False):
+    '''
+    creates the groups of 'price' mean and median by `col` and `period`, shifts it
+    by each value of `shft`, calls the `price_interpol` functon  if `interpol` is True
+    and store them in the `groupers` list
+    '''
     
     for sh in shft:
             
@@ -111,24 +129,32 @@ def create_group(df,groupers,col,period,shft,interpol=False):
     return df,groupers
 
 
-def grouping(df):
+def grouping(df:pd.DataFrame):
+    '''
+    calls `create_group` function for each of three specific columns to get the values
+    for the `price` of 3 months ago and 1 year ago
+    '''
 
     groupers = []
-
     df[df.dtypes[df.dtypes=='object'].index.tolist()] = df[df.dtypes[df.dtypes=='object'].index.tolist()].astype(str)
 
     for col in ['room_type','neighbourhood','neighbourhood_group']:
-
         df,groupers = create_group(df,groupers,col,'year',[1])
         df,groupers = create_group(df,groupers,col,'year_month',[3],True)
     
     return df,groupers
 
 
-def fill_missing(df,groupers, dummies,to_remove=[]):
+def fill_missing(df:pd.DataFrame,groupers:list, dummies:list,to_remove=[]):
+    '''
+    brings the wanted columns of list `dummies` to the dataframe `df`, fills missing month 
+    and year dates by finding the 10 most closest `prices` of each dataframe in `groupers`
+    and computing the overall most common date and concatenates `df` with each dataframe
+    in the `groupers` list
+    '''
+
 
     df = get_distance(df)
-
     df[df.dtypes[df.dtypes=='object'].index.tolist()] = df[df.dtypes[df.dtypes=='object'].index.tolist()].astype(str)
 
     if not to_remove:
@@ -178,7 +204,7 @@ def fill_missing(df,groupers, dummies,to_remove=[]):
     missing_dummies = pd.get_dummies(df[['neighbourhood','neighbourhood_group','room_type']],dummy_na=True)
     df = pd.concat([df,missing_dummies],axis=1)
     df = df.drop(columns=to_remove)
-    df[dummies] = 0
+    df[dummies.columns[~dummies.columns.isin(missing_dummies)]] = 0
     df.drop(columns = missing_dummies.columns[~missing_dummies.columns.isin(dummies)],inplace=True)
 
     df.drop(columns = 'room_type_nan',inplace=True)
@@ -186,7 +212,10 @@ def fill_missing(df,groupers, dummies,to_remove=[]):
     return df
 
 
-def final_adjustments(df,adj_dummies=[]):    
+def final_adjustments(df:pd.DataFrame): 
+    '''
+    drop unwanted columns, get dummies for specific columns and redefine some columns types
+    '''   
 
     df.drop_duplicates(subset=['id'],inplace=True)   
     
@@ -195,18 +224,17 @@ def final_adjustments(df,adj_dummies=[]):
     df = df.drop(columns=['room_type_nan', 'neighbourhood', 'year','year_month','id','host_id'])
     df.columns = [x.replace('/','_').replace('-','_').replace(',',' ').replace("'",'') for x in df.columns]
     
-    if type(adj_dummies)!=list:
-        df[adj_dummies.columns[~adj_dummies.columns.isin(df.columns)]] = 0
-        df.drop(columns = dummies.columns[~dummies.columns.isin(adj_dummies.columns)],inplace=True)
-    
     slicer = (df.dtypes == 'uint8')
-
     df[df.columns[slicer]] = df[df.columns[slicer]].astype(int)
 
     return df, dummies.columns.tolist()
 
 
-def interpolating(df):
+def interpolating(df:pd.DataFrame):
+    '''
+    transforms `year_month` into an accountable float column ot then interpolate it to fill
+    some missing values
+    '''
 
     df['year'] = df['last_review'].astype(str).str[:4]
     df['year_month'] = df['last_review'].astype(str).str[:7]
@@ -223,15 +251,13 @@ def interpolating(df):
 
     return df
 
-def reducing_features(df):
+def reducing_features(df:pd.DataFrame):
+    '''
+    uses Boruta to find the most important features
+    '''
 
-    temp = df.copy()
-
-    temp = temp.drop(columns=['name','neighbourhood_group','room_type','host_name','last_review','reviews_per_month']).dropna()
-
-    y = temp['price']
-
-    X = temp.drop(columns='price')
+    X = df.drop(columns=['name','neighbourhood_group','room_type','host_name','last_review','reviews_per_month']).dropna()
+    y = X.pop('price')
 
 
     model = LGBMRegressor(n_estimators=300, max_depth=50, random_state=42)
@@ -251,9 +277,6 @@ def reducing_features(df):
     # print support and ranking for each feature
 
     gc.collect()
-
     cols = list(X.columns[feat_selector.support_])
-
     logger.info(f'{len(cols)} features remaining')
-
     return cols
