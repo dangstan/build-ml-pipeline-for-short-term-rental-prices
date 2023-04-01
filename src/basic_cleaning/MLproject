@@ -14,7 +14,7 @@ entry_points:
         type: string
 
       output_type:
-        description: the output tybe for tracking matters
+        description: the output type for tracking matters
         type: string
 
       output_description:
@@ -23,11 +23,11 @@ entry_points:
 
       min_price:
         description: minimum price to account for
-        type: float
+        type: int
 
       max_price:
         description: maximum price to account for
-        type: float
+        type: int
 
 
     command: >-
