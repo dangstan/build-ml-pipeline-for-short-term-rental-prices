@@ -6,28 +6,28 @@ entry_points:
     parameters:
 
       input_artifact:
-        description: ## ADD DESCRIPTION
+        description: sample dataset to clean
         type: string
 
       output_artifact:
-        description: ## ADD DESCRIPTION
+        description: cleaned dataset
         type: string
 
       output_type:
-        description: ## ADD DESCRIPTION
+        description: the output tybe for tracking matters
         type: string
 
       output_description:
-        description: ## ADD DESCRIPTION
+        description: Text describing what the output aims to be
         type: string
 
       min_price:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: minimum price to account for
+        type: float
 
       max_price:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: maximum price to account for
+        type: float
 
 
     command: >-
